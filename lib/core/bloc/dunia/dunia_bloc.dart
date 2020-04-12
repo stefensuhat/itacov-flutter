@@ -13,9 +13,7 @@ class DuniaBloc extends Bloc<DuniaEvent, DuniaState> {
   DuniaState get initialState => InitialDuniaState();
 
   @override
-  Stream<DuniaState> mapEventToState(
-    DuniaEvent event,
-  ) async* {
+  Stream<DuniaState> mapEventToState(DuniaEvent event) async* {
     if (event is LoadDuniaEvent) {
       yield* _mapLoadDuniaEventToState();
     }
@@ -28,10 +26,8 @@ class DuniaBloc extends Bloc<DuniaEvent, DuniaState> {
     String valueMeninggalDunia = '';
 
     var responseSembuhDunia = await repoApi.getDataSembuhDunia();
-    var sembuhDunia = responseSembuhDunia.fold(
-      (error) => error,
-      (data) => data,
-    );
+    var sembuhDunia =
+        responseSembuhDunia.fold((error) => error, (data) => data);
     if (sembuhDunia is String) {
       yield FailureDuniaState(sembuhDunia);
       return;
@@ -63,7 +59,8 @@ class DuniaBloc extends Bloc<DuniaEvent, DuniaState> {
     List<DuniaModel> listDuniaModel = [
       DuniaModel(name: 'Kasus Positif Seluruh Dunia', value: valuePositifDunia),
       DuniaModel(name: 'Kasus Sembuh Seluruh Dunia', value: valueSembuhDunia),
-      DuniaModel(name: 'Kasus Meninggal Seluruh Dunia', value: valueMeninggalDunia),
+      DuniaModel(
+          name: 'Kasus Meninggal Seluruh Dunia', value: valueMeninggalDunia),
     ];
     yield LoadedDuniaState(listDuniaModel);
   }
